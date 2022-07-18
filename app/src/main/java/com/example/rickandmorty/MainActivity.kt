@@ -7,11 +7,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.rickandmorty.databinding.ActivityMainBinding
 import com.example.rickandmorty.network.Character
 import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
 
     var cachedList = ArrayList<Character>()
     var displayList = ArrayList<Character>()
@@ -25,11 +27,14 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        setSupportActionBar(findViewById(R.id.my_toolbar))
+        setSupportActionBar(binding.myToolbar)
 
 
         viewModel.fetchCharacters("1") // Coroutine call
@@ -48,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
             response?.let {
                 adapter = MainAdapter(this@MainActivity, displayList)
-                recyclerView = findViewById<RecyclerView>(R.id.charactersRv)
+                recyclerView = binding.charactersRv
                 recyclerView?.layoutManager =
                     StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                 recyclerView?.adapter = adapter
